@@ -30,13 +30,13 @@ RUN useradd -u 1000 -ms /bin/bash -g www www
 
 
 ENV HOME=/home/app
-COPY ./ $HOME/codivpp/
+COPY . $HOME/covidprudente/
 
-COPY --chown=www:www ./ $HOME/codivpp/
+COPY --chown=www:www . $HOME/covidprudente/
 
 USER www
-WORKDIR $HOME/covidpp
+WORKDIR $HOME/covidprudente
 
 EXPOSE 8001
 
-CMD ["php", "-S localhost:8001 -t public"]
+CMD ["php", "-S", "0.0.0.0:8001", "-t", "public"]
