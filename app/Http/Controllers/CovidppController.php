@@ -15,7 +15,12 @@ class CovidppController extends Controller
     }
 
     public function getCovidHtml(){
-        $html = file_get_contents('https://www.inovaprudente.com.br/coronavirus');
+        $html="";
+        try {
+            $html = file_get_contents('https://www.inovaprudente.com.br/coronavirus');
+        } catch (\Throwable $th) {
+            return $th;
+        }
 
         $pos = strpos($html, "const source_datasets = ") + 24;
         $pos2 = strpos($html, ";", $pos);
