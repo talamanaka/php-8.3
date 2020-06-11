@@ -5,7 +5,9 @@ O projeto tem como objetivo fornecer melhor visualização dos dados da epidemia
 ## Requisitos
 
 PHP 7.2+
+
 Composer
+
 Extensões listadas no Dockerfile
 
 ## Rodando com Docker
