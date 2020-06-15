@@ -1,4 +1,4 @@
-# Covidpp
+# CovidPrudente
 
 O projeto tem como objetivo fornecer melhor visualização dos dados da epidemia de covid19 da Secretaria de Saúde de Presidente Prudente.
 
