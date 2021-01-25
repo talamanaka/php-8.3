@@ -17,6 +17,8 @@ RUN apt-get update && apt-get install -y \
     git \
     curl
 
+#RUN apt-get install -y mongodb
+
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
@@ -28,11 +30,11 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
 
-
 ENV HOME=/home/app
 COPY . $HOME/covidprudente/
 
 COPY --chown=www:www . $HOME/covidprudente/
+
 
 USER www
 WORKDIR $HOME/covidprudente

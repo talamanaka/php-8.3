@@ -7,10 +7,8 @@ use Illuminate\Http\Request;
 
 class CovidppController extends Controller
 {
-
-
     const POPULACAO_PRUDENTE = 207610;
-    const LETALIDADE_REAL = 0.012;
+    const LETALIDADE_REAL = 0.009;
 
     public function getBaseData()
     {
@@ -29,6 +27,11 @@ class CovidppController extends Controller
         $pos = strpos($html, "const source_datasets = ") + 24;
         $pos2 = strpos($html, ";", $pos);
 
+        $datePos = strpos($html, "const source_labels = ") + 22;
+        $datePos2 = strpos($html, ";", $datePos);
+        $dateHtml = substr($html, $datePos, ($datePos2-$datePos));
+        $dateHtml = str_replace('"', '', str_replace('[', '', str_replace(']', '', str_replace('\/', '/', $dateHtml))));
+        $date = explode(',', $dateHtml);
         $html = substr($html, $pos, ($pos2-$pos));
 
         $json = json_decode($html);
@@ -38,9 +41,6 @@ class CovidppController extends Controller
             $return[strtolower($this->stripAccents($variable->label))] = $variable->data;
         }
 
-        $initialDate = '2020-03-18';
-        $dateVariable      = strtotime($initialDate);
-
         for ($i=0; $i < sizeof($return['obitos']); $i++) {
             $return['obitos'][$i]=intval($return['obitos'][$i]);
             $return['confirmados'][$i]=intval($return['confirmados'][$i]);
@@ -49,8 +49,7 @@ class CovidppController extends Controller
             $return['descartados'][$i]=intval($return['descartados'][$i]);
             $return['notificacoes'][$i]=intval($return['notificacoes'][$i]);
             $return['curados'][$i]=intval($return['curados'][$i]);
-            $return['data'][$i] = ($i == 0) ? $initialDate
-            : date('Y-m-d', strtotime('+ ' . ($i == 1)? $i .' day': $i .' days', $dateVariable));
+            $return['data'][$i] =  $date[$i];
             $return['descartados_percentual'][$i] = $return['descartados'][$i] / $return['notificacoes'][$i];
             $return['confirmados_percentual'][$i] = $return['confirmados'][$i] / $return ['notificacoes'][$i];
             $return['testados_percentual'][$i] = ($return['confirmados'][$i] +
@@ -77,31 +76,5 @@ class CovidppController extends Controller
 
     private function stripAccents($str){
         return strtr(utf8_decode($str), utf8_decode('àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ '), 'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY_');
-    }
-
-    public function showOneAuthor($id)
-    {
-        return response()->json(Author::find($id));
-    }
-
-    public function create(Request $request)
-    {
-        $author = Author::create($request->all());
-
-        return response()->json($author, 201);
-    }
-
-    public function update($id, Request $request)
-    {
-        $author = Author::findOrFail($id);
-        $author->update($request->all());
-
-        return response()->json($author, 200);
-    }
-
-    public function delete($id)
-    {
-        Author::findOrFail($id)->delete();
-        return response('Deleted Successfully', 200);
     }
 }
