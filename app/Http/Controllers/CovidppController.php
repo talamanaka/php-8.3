@@ -45,7 +45,7 @@ class CovidppController extends Controller
             $return['obitos'][$i]=intval($return['obitos'][$i]);
             $return['confirmados'][$i]=intval($return['confirmados'][$i]);
             $return['hospitalizados'][$i]=intval($return['hospitalizados'][$i]);
-            $return['aguardando_resultado'][$i]=intval($return['aguardando_resultado'][$i]);
+            $return['aguardando'][$i]=intval($return['aguardando'][$i]);
             $return['descartados'][$i]=intval($return['descartados'][$i]);
             $return['notificacoes'][$i]=intval($return['notificacoes'][$i]);
             $return['curados'][$i]=intval($return['curados'][$i]);
@@ -71,7 +71,7 @@ class CovidppController extends Controller
                                                     ? $return['assintomaticos_total'][$i] : 0;
         }
 
-        return(($return));
+        return($return);
     }
 
     private function stripAccents($str){
