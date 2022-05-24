@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
     git \
     curl
 
-#RUN apt-get install -y mongodb
+#RUN apt-get install -y mongodb vsftp
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
